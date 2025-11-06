@@ -18,6 +18,21 @@ public class Tests {
     }
 
     @Test
+    public void addDepartmentTest(){
+        int departmentId = 4;
+        String departmentName = "Sales";
+
+        Department department = new Department(departmentId, departmentName);
+        service.addDepartment(department);
+
+        List<Department> departmentList = getDepartmentByID(departmentId);
+
+        Assertions.assertEquals(1, departmentList.size());
+        Assertions.assertEquals(departmentId, departmentList.get(0).getDepartmentID());
+        Assertions.assertEquals(departmentName, departmentList.get(0).getName());
+    }
+
+    @Test
     public void removeDepartmentTest(){
         int removableDepartmentID = 1;
         List<Employee> employeeList = getEmployeesListByDepartmentID(removableDepartmentID);
