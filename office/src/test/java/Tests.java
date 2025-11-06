@@ -10,9 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Tests {
+    String testBaseURL = "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1";
+    Service service = new Service(testBaseURL);
     @BeforeEach
     public void setup(){
-        Service.createDB();
+        service.createDB();
     }
 
     @Test
@@ -25,7 +27,7 @@ public class Tests {
         Assertions.assertNotEquals(0, employeeList.size(), "Пустой список сотрудников отдела с ID="
                 + removableDepartmentID);
 
-        Service.removeDepartment(department);
+        service.removeDepartment(department);
 
         List<Department> departmentList = getDepartmentByID(removableDepartmentID);
 
@@ -39,7 +41,7 @@ public class Tests {
     private List<Employee> getEmployeesListByDepartmentID(int removableDepartmentID){
         List<Employee> employeeList = new ArrayList<>();
 
-        try (Connection con = DriverManager.getConnection("jdbc:h2:.\\Office")) {
+        try (Connection con = DriverManager.getConnection(testBaseURL)) {
             Statement stm = con.createStatement();
             ResultSet rs= stm.executeQuery("""
                     Select *
@@ -63,7 +65,7 @@ public class Tests {
     private List<Department> getDepartmentByID(int departmentID){
         List<Department> departmentList = new ArrayList<>();
 
-        try (Connection con = DriverManager.getConnection("jdbc:h2:.\\Office")) {
+        try (Connection con = DriverManager.getConnection(testBaseURL)) {
             Statement stm = con.createStatement();
             ResultSet rs= stm.executeQuery("""
                     Select *
